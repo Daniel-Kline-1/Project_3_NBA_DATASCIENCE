@@ -1,19 +1,17 @@
-d3.csv("/../social-power-nba/nba_2017_salary.csv", function(data, error) {
-    var data1 = data
-    console.log(data);
-    return data1;
+//d3.json("/player_data").then( data =>console.log(data))
   
-  var dataset = [];
-  function handleClick(event){
-    console.log(document.getElementById("myVal").value)
-    draw(document.getElementById("myVal").value)
-    return false;
-};
-function draw(val){
-    d3.select("body").select("ul").append("li");
-    dataset.push(val);
-    var p = d3.select("body").selectAll("li")
-    .data(dataset)
-    .text(function(d,i){return i + ": " + d;})
-};
-});
+console.log("a")    
+
+// // }).then((sampleNames) => {
+// //     sampleNames["PLAYER"].forEach((sample) => {
+// //         d3.select("#selDataset")
+// //         .append("option")
+// //         .text(sample)
+// //         .property("value", sample);
+// //     })
+// })
+
+
+// d3.json("/player_data/",function(data){
+//     console.log(data)
+// })

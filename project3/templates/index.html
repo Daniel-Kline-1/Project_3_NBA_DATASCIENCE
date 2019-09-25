@@ -6,59 +6,263 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="../js/app.js"></script>
-<script src="../python/python.py"></script>
+ 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="./../js/app.js"></script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+  <div class="well">
+    <h5>SELECT Player:</h5>
+    <select id="selDataset" onchange="optionChanged(this.value)" , style="fill:black"></select>
+    <div class="row">
+      <div class="col-lg-12">
+      <p><a class="accordion-toggle", href=#content-3 , style="text-align: right">Player Pictures</a></p>
     </div>
-  </nav>
-  <form name="myform" onSubmit="return handleClick()">
-    <input name="Submit"  type="submit" value="Search Player" >
-    <input type="text" id="myVal" placeholder=" Enter Player Name&hellip;">
-</form>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12  col-md-9">
+      <div id="scatter">
+        <!-- We append our chart here. -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  
+
+<div class="accordian-toggle" id="content-3">
+  <div id="table">
+
+  </div>
+</div>
+
+
+
+  <script>
+  document.addEventListener('click',function(event){
+    
+    console.log(event)
+    if(!event.target.classList.contains('accordian-toggle')) return;
+// get content area
+var content = document.querySelector(event.target.hash);
+if (!content) return;
+console.log(content);
+  },false)
+  </script>
 <table>
     
 </table>
+<script>
+  var svgWidth = window.innerWidth;
+  var svgHeight = window.innerHeight;
+
+  var margin = {
+    top: 50,
+    bottom: 100,
+    right: 50,
+    left: 100
+  };
+
+  var height = svgHeight - margin.top - margin.bottom;
+  var width = svgHeight - margin.left - margin.right;
+
+  // Append SVG element
+  var svg = d3
+    .select("#scatter")
+    .append("svg")
+    .attr("height", svgHeight)
+    .attr("width", svgWidth);
+
+  // Append group element
+  var chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+
+
+
+
+
+
+  
+
+
+var selector = d3.select("#selDataset");
+
+  // Use the list of sample names to populate the select options
+  d3.json("/list_of_players",function(sampleNames){
+    sampleNames.forEach((sample) => {
+      selector
+        .append("option")
+        .text(sample)
+        .property("value", sample);
+    });
+    const firstSample = sampleNames[0];
+    var namess = firstSample.split(" ")
+    console.log(namess)
+    d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
+console.log(url_img.url)
+var svg2 = d3.select("body")
+                .append("svg")
+                .attr("width", 300)
+                .attr("height", 200)
+                ;
+var imgs = svg2.selectAll("image").data([0]);
+                imgs.enter()
+                .append("svg:image")
+                .attr("xlink:href", url_img.url)
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 400)
+                .attr("height", 200);
+
+
+
+  })
+
+
+
+    d3.json("/player_data",function(data){
+  // var player_name_select = d3.select
+  //console.log(data)
+  for(i=0;i<data.length;i++){
+    if(data[i].player == firstSample){
+      var ct = i
+    }
+  }
+  var points = "points"
+  var salary_millions = "salary_millions"
+  var twitter_favorite_count = "twitter_favorite_count"
+  var twitter_retweet_count = "twitter_retweet_count"
+  var games_played = "gp"
+  var minutes_per_game = "mpg"
+for(i=0;i<data.length;i++){
+    if(data[i].player == firstSample){
+      console.log(data[i])
+      data.forEach(function(data1){
+      data1.points = +data1.points;
+      data1.salary_millions = +data1.salary_millions;
+      data1.twitter_favorite_count = +data1.twitter_favorite_count;
+      data1.twitter_retweet_count = +data1.twitter_retweet_count;
+      
+    });
+    
+    var point = data.map( d=>d.points )
+    var mill_sal = data.map( d=> d.salary_millions)
+    console.log(d3.extent(point));
+    console.log(d3.extent(mill_sal))
+
+    var xLinearScale = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.salary_millions))
+      .range([0, width]);
+
+    var yLinearScale = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.points))
+      .range([height, 0]); 
+    // create axes
+    var xAxis = d3.axisBottom(xLinearScale);
+    var yAxis = d3.axisLeft(yLinearScale).ticks(7);
+    //append axes
+chartGroup.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(xAxis);
+
+    chartGroup.append("g")
+      .call(yAxis);
+
+
+      var listt = [mill_sal,point];
+console.log(listt);
+
+//////////////////////////////////////////////////////
+// chartGroup.select("circle")
+
+
+// .append("circle")
+// .attr("cx", xLinearScale(data[ct].salary_millions))
+// .attr("cy", yLinearScale(data[ct].points))
+// .attr("r",15)
+// .attr("fill","blue");
+console.log(data[ct].salary_millions)
+console.log(data[ct].points)
+chartGroup.selectAll("circle")
+.data(data)
+.enter()
+.append("circle")
+.attr("cx", d => xLinearScale(d.salary_millions))
+.attr("cy", d => yLinearScale(d.points))
+.attr("r",5)
+.attr("fill","red");
+//////////////////////////////////////////////////////
+
+
+
+
+    }
+
+}
+})
+
+
+
+
+
+
+
+  });
+  function optionChanged(newSample) {
+    var namess = newSample.split(" ")
+    d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
+console.log(url_img.url)
+var svg2 = d3.select("body")
+                .append("svg")
+                .attr("width", 300)
+                .attr("height", 200)
+                ;
+var imgs = svg2.selectAll("image").data([0]);
+                imgs.enter()
+                .append("svg:image")
+                .attr("xlink:href", url_img.url)
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 400)
+                .attr("height", 200);
+
+
+
+  })
+
+    
+d3.json("/player_data/",function(json_data){
+  console.log(json_data[0])
+ for(i=0;i<json_data.length;i++){
+if(json_data[i].player == newSample){
+ var y = json_data[i]
+  console.log(y[0])
+
+ 
+
+
+
+
+
+
+}
+ }
+})
+
+  console.log(newSample)
+}
+</script>
 
 
 </body>
