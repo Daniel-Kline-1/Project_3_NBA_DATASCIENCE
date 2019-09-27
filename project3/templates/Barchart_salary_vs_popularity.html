@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>Salary Vs Popularity</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script src="https://d3js.org/d3-scale.v3.min.js"></script>
+  <style>
+    .bar {
+        fill: #AB47BC ;
+    }
+    .bar:hover{
+        fill: #8e24aa;
+    }
+    text{
+        fill: white;
+    }
+    path,line{
+        stroke: white;
+    }
+    body{
+        background: #222;
+        height: 100%;
+        display: flex;
+    }
+    .BarGraphe{
+        cursor: pointer;
+    }
+    .BarGraphe > text{
+        fill-opacity: 0;
+        transition: 0.3s;
+    }
+    .BarGraphe:hover > text{
+        fill-opacity: 1;
+    }
+    .grapheContainer{
+       margin: auto;
+    }
+    .title{
+        text-align: center;
+        color: white;
+    }
+</style>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <form method="post">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a method="post" class="navbar-brand" href="{{ url_for('index') }}">NBA Data</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">Feature</a>
+            </li> -->
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li> -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Other Plots
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{{ url_for('scatterplot_Wins_Popularity') }}">Popularity Vs Wins</a>
+                <a class="dropdown-item" href="{{ url_for('Barchart_salary_vs_popularity') }}">Popularity Vs Salary</a>
+                <a class="dropdown-item" href="{{ url_for('Scatterplot_Points_Popularity') }}">Popularity Vs Points</a>
+                <a class="dropdown-item" href="{{ url_for('Bargraph_player_popularity') }}">Popularity Vs Rank</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      </form>
+
+
+  <div class="grapheContainer">
+    <svg width="600" height="500"></svg>
+     <p class="title">Bars Graphe (D3.js + SVG) using data from txt file</p>
+</div>
+
+<script>
+
+    var svg = d3.select("svg"),
+            margin = 150,
+            width = svg.attr("width") - margin,
+            height = svg.attr("height") - margin
+
+
+
+    var xScale = d3.scaleBand().rangeRound([0, width]).paddingInner(0.4),
+     yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+    var g = svg.append("g")
+            .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+
+
+
+  
+
+    d3.csv("/static/social-power-nba/nba_2017_players_with_salary_wiki_twitter.csv", function(error, data) {
+        if (error) {
+            throw error;
+
+        }
+
+        xScale.domain(data.map(function(d) { return d.SALARY_MILLIONS; }));
+        yScale.domain([0, d3.max(data, function(d) { return d.PAGEVIEWS; })]);
+
+        g.append("g")
+         .attr("transform", "translate(0," + height + ")")
+         .call(d3.axisBottom(xScale));
+
+        g.append("g")
+         .call(d3.axisLeft(yScale).tickFormat(function(d){
+             return "$" + d;
+         }).ticks(10));
+
+    
+        g.selectAll(".bar")
+         .data(data)
+         .enter().append('g').attr('class','BarGraphe').append("rect")
+         .attr("class", "bar")
+         .attr("x", function(d) { return xScale(d.SALARY_MILLIONS); })
+         .attr("y", function(d) { return yScale(d.PAGEVIEWS); })
+         .attr("width", xScale.bandwidth())
+         .attr("height", function(d) { return height - yScale(d.PAGEVIEWS); });
+
+         d3.selectAll(".BarGraphe")
+         .append("text")
+         .attr("class", "PAGEVIEWS")
+         .text(function(d){return '$'+d.PAGEVIEWS;})
+         .attr("x", function(d) { return xScale(d.SALARY_MILLIONS)+xScale.bandwidth()/5; })
+         .attr("y", function(d) { return yScale(d.PAGEVIEWS)-10; }) ;
+    });
+</script>
+
+
+
+
+</body>
+</html>

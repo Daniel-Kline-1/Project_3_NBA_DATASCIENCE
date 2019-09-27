@@ -15,29 +15,28 @@
 <body>
   <script src="//d3js.org/d3.v3.min.js"></script>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">NBA Data</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
+            
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">Feature</a>
+            </li> -->
+            <!-- <li class="nav-item">
               <a class="nav-link" href="#">Pricing</a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Teams
+                Other Plots
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                  <a class="dropdown-item" href="{{ url_for('scatterplot_Wins_Popularity') }}">Popularity Vs Wins</a>
+                  <!-- <a class="dropdown-item" href="{{ url_for('Barchart_salary_vs_popularity') }}">Popularity Vs Salary</a> -->
+                  <a class="dropdown-item" href="{{ url_for('Scatterplot_Points_Popularity') }}">Popularity Vs Points</a>
+                  <!-- <a class="dropdown-item" href="{{ url_for('Bargraph_player_popularity') }}">Popularity Vs Rank</a> -->
               </div>
             </li>
           </ul>
@@ -66,7 +65,7 @@
 
 
 
-
+  
 
   
 
@@ -130,7 +129,7 @@ console.log(content);
 
   
 
-
+// the player's name listed being called with d3
 var selector = d3.select("#selDataset");
 
   // Use the list of sample names to populate the select options
@@ -147,8 +146,10 @@ var selector = d3.select("#selDataset");
    
     var namess = firstSample.split(" ")
     console.log(namess)
+    // this d3.json section is used to put an image on the webpage
+    // 
     d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
-console.log(url_img.url)
+console.log(url_img)
 var svg2 = d3.select("body")
                 .append("svg")
                 .attr("width", 300)
@@ -157,7 +158,7 @@ var svg2 = d3.select("body")
 var imgs = svg2.selectAll("image").data([0]);
                 imgs.enter()
                 .append("svg:image")
-                .attr("xlink:href", url_img.url)
+                .attr("xlink:href", url_img)
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", 400)
@@ -183,6 +184,8 @@ var imgs = svg2.selectAll("image").data([0]);
   var twitter_retweet_count = "twitter_retweet_count"
   var games_played = "gp"
   var minutes_per_game = "mpg"
+// parcing the data, though honestly i do not think this servers any
+// value to the code at this point
 for(k=0;k<data.length;k++){
     if(data[k].player == firstSample){
       console.log(data[k])
@@ -221,26 +224,8 @@ chartGroup.append("g")
       var listt = [mill_sal,point];
 console.log(listt);
 
-//////////////////////////////////////////////////////
-// chartGroup.select("circle")
-
-
-// .append("circle")
-// .attr("cx", xLinearScale(data[ct].salary_millions))
-// .attr("cy", yLinearScale(data[ct].points))
-// .attr("r",15)
-// .attr("fill","blue");
 console.log(data[ct].salary_millions)
 console.log(data[ct].points)
-// add points
-// chartGroup.selectAll("circle")
-// .data(data)
-// .enter()
-// .append("circle")
-// .attr("cx", d => xLinearScale(d.salary_millions))
-// .attr("cy", d => yLinearScale(d.points))
-// .attr("r",5)
-// .attr("fill","red");
 
 
 // the for loop below will format the data so it can be put into
@@ -293,47 +278,16 @@ chartGroup.append("text")
 })
 
 
-
-
-
-
-
   });
   function optionChanged(newSample) {
     var namess = newSample.split(" ")
     d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
-console.log(url_img.url)
+console.log(url_img)
 
 
 
 
   })
-
-    
-// d3.json("/player_data/",function(json_data){
-//   console.log(json_data)
-
-// for(i=0;i<json_data.length;i++){
-//   if(json_data[i].player == newSample){
-//     var y = json_data[i];
-//     var player_number = i;
-//     return;
-//   } 
-// }
-// console.log(y)
-// console.log()
-// var point = json_data.map( d=>d.points )
-//     var mill_sal = json_data.map( d=> d.salary_millions)
-//     var listt = [mill_sal,point];
-//     console.log(listt)
-//  array_for_plot = [[],[]];
-// for(var i=0;i<listt[0].length;i++){
-//   array_for_plot[0].push({'x':listt[0][i],'y':listt[1][i]});
-// }
-
-// console.log(array_for_plot)
-
-//  })
 
 
   console.log(newSample)
@@ -341,7 +295,7 @@ console.log(url_img.url)
   var namess = newSample.split(" ")
     console.log(namess)
     d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
-console.log(url_img.url)
+console.log(url_img)
 var svg2 = d3.select("body")
                 .append("svg")
                 .attr("width", 300)
@@ -350,7 +304,7 @@ var svg2 = d3.select("body")
 var imgs = svg2.selectAll("image").data([0]);
                 imgs.enter()
                 .append("svg:image")
-                .attr("xlink:href", url_img.url)
+                .attr("xlink:href", url_img)
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", 400)
@@ -358,7 +312,6 @@ var imgs = svg2.selectAll("image").data([0]);
                 .text(newSample);
 
   });
-
 
 
   d3.json("/player_data",function(data){
@@ -414,25 +367,10 @@ chartGroup.append("g")
 console.log(listt);
 
 //////////////////////////////////////////////////////
-// chartGroup.select("circle")
 
-
-// .append("circle")
-// .attr("cx", xLinearScale(data[ct].salary_millions))
-// .attr("cy", yLinearScale(data[ct].points))
-// .attr("r",15)
-// .attr("fill","blue");
 console.log(data[ct].salary_millions)
 console.log(data[ct].points)
-// add points
-// chartGroup.selectAll("circle")
-// .data(data)
-// .enter()
-// .append("circle")
-// .attr("cx", d => xLinearScale(d.salary_millions))
-// .attr("cy", d => yLinearScale(d.points))
-// .attr("r",5)
-// .attr("fill","red");
+
 
 
 // the for loop below will format the data so it can be put into
@@ -444,6 +382,8 @@ for(var i=0;i<listt[0].length;i++){
 }
 array_for_plot[1].push({'x':listt[0][player_number],'y':listt[1][player_number]})
 console.log(array_for_plot)
+
+
 chartGroup.selectAll(".series").remove();
 chartGroup.selectAll(".series")
       .data(array_for_plot)
