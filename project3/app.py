@@ -131,18 +131,6 @@ def scatterplot_Wins_Popularity():
 
 
 
-# @app.route('/Barchart_salary_vs_popularity', methods=['GET', 'POST'])
-# def Barchart_salary_vs_popularity():
-#     if request.method == 'POST':
-#         # do stuff when the form is submitted
-
-#         # redirect to end the POST handling
-#         # the redirect can be to the same route or somewhere else
-#         return redirect(url_for('index'))
-
-#     # show the form, it wasn't submitted
-#     return render_template('Barchart_salary_vs_popularity.html')
-
 
 
 
@@ -159,17 +147,7 @@ def Scatterplot_Points_Popularity():
     return render_template('Scatterplot_Points_Popularity.html')
 
 
-# @app.route('/Bargraph_player_popularity', methods=['GET', 'POST'])
-# def Bargraph_player_popularity():
-#     if request.method == 'POST':
-#         # do stuff when the form is submitted
 
-#         # redirect to end the POST handling
-#         # the redirect can be to the same route or somewhere else
-#         return redirect(url_for('index'))
-
-#     # show the form, it wasn't submitted
-#     return render_template('Bargraph_player_popularity.html')
 
 
 if __name__ == "__main__":
