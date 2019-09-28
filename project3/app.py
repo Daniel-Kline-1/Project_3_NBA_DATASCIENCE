@@ -127,7 +127,11 @@ def scatterplot_Wins_Popularity():
     # show the form, it wasn't submitted
     return render_template('scatterplot_Wins_Popularity.html')
 
-
+@app.route('/scatter_points_rank',methods=['GET','POST'])
+def scatter_points_rank():
+    if request.method == 'POST':
+        return redirect(url_for('index'))
+    return render_template('scatter_points_rank.html')
 
 
 

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Popularity Vs Points</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+<style>
+.tooltip {
+  position: absolute;
+  width: 80px;
+  height: 50px;
+  padding: 10px;
+  font: 12px sans-serif;
+  text-align: center;
+  color: white;
+  background: blue;
+  border: 0;
+  border-radius: 10px;
+  display: none;
+}
+
+
+</style>
+</head>
+<body>
+  
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('index') }}">NBA Data</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Other Plots
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('scatterplot_Wins_Popularity') }}">Popularity Vs Wins</a>
+                  <a class="dropdown-item" href="{{ url_for('Scatterplot_Points_Popularity') }}">Popularity Vs Points</a>
+                  <a class="dropdown-item" href="{{ url_for('scatter_points_rank') }}">Ranking Vs Points</a>
+                 
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <script src="https://d3js.org/d3.v4.js"></script>
+
+      <!-- Create a div where the graph will take place -->
+      <div id="my_dataviz"></div>
+      <div class="chart"></div>
+      <script>
+      function makeResponsive() {
+//       // set the dimensions and margins of the graph
+//       var margin = {top: 10, right: 30, bottom: 50, left: 100},
+//           width = 860 - margin.left - margin.right,
+//           height = 800 - margin.top - margin.bottom;
+      
+//       // append the svg object to the body of the page
+//       var svg = d3.select("#my_dataviz")
+//         .append("svg")
+//           .attr("width", width + margin.left + margin.right)
+//           .attr("height", height + margin.top + margin.bottom)
+//         .append("g")
+//           .attr("transform",
+//                 "translate(" + margin.left + "," + margin.top + ")");
+      
+//       //Read the data
+//       d3.csv("static/social-power-nba/nba_2017_players_with_salary_wiki_twitter.csv", function(data) {
+//       // console.log(data);
+//       // console.log(data[0]);
+//       // console.log(data[0].POINTS)
+//         // Add X axis
+//         var x = d3.scaleLinear()
+//           .domain([475, 0])
+//           .range([ 0, width ]);
+//         svg.append("g")
+//           .attr("transform", "translate(0," + height + ")")
+//           .call(d3.axisBottom(x));
+      
+//         // Add Y axis
+//         var y = d3.scaleLinear()
+//           .domain([0, 40])
+//           .range([ height, 0]);
+//         svg.append("g")
+//           .call(d3.axisLeft(y));
+      
+//         // Add dots
+//         // svg.append('g')
+//         //   .selectAll("dot")
+//         //   .data(data)
+//         //   .enter()
+//         //   .append("circle")
+//         //     .attr("cx", function (d) { return x(d.Rk); } )
+//         //     .attr("cy", function (d) { return y(d.POINTS); } )
+//         //     .attr("r", 2.5)
+//         //     .style("fill", "#69b3a2");
+
+
+
+
+
+
+//    // append circles
+//    var circlesGroup = svg.selectAll("circle")
+//       .data(data)
+//       .enter()
+//       .append("circle")
+//       .attr("cx", d => x(d.Rk))
+//       .attr("cy", d => y(d.POINTS))
+//       .attr("r", "2.5")
+//       .attr("fill", "gold")
+//       .attr("stroke-width", "1")
+//       .attr("stroke", "black");
+
+
+
+
+
+
+//       svg.append("text")
+//   .attr("transform", "rotate(-90)")
+//   .attr("y", - margin.left+15)
+//   .attr("x", - (height / 2)-30)
+//   .attr("dy", "1em")
+//   .attr("class", "aText")
+//   .attr("id","axisY")
+//   .text("Points");
+
+// svg.append("text")
+//   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+//   .attr("class", "axisText")
+//   .attr("id","axisX")
+//   .text("Rank");
+
+//     // Step 1: Append tooltip div
+//   var toolTip = d3.select("#my_dataviz").append("div")
+//     .attr("class", "tooltip");
+
+//       // Step 2: Create "mouseover" event listener to display tooltip
+//       circlesGroup.on("mouseover", function(d, i) {
+//       toolTip.style("display", "block");
+//       toolTip.html(`Name: <strong>${data[i].PLAYER}</strong>`)
+//         .style("left", d3.event.pageX + "px")
+//         .style("top", d3.event.pageY + "px");
+//     })
+//         // Step 3: Create "mouseout" event listener to hide tooltip
+//         .on("mouseout", function() {
+//       toolTip.style("display", "none");
+//     });
+
+      
+//       })
+      
+
+
+// if the SVG area isn't empty when the browser loads,
+  // remove it and replace it with a resized version of the chart
+  var svgArea = d3.select(".chart").select("svg");
+
+  // clear svg is not empty
+  if (!svgArea.empty()) {
+    svgArea.remove();
+  }
+
+  // SVG wrapper dimensions are determined by the current width and
+  // height of the browser window.
+  var svgWidth = window.innerWidth;
+  var svgHeight = window.innerHeight-100;
+
+  var margin = {
+    top: 50,
+    bottom: 50,
+    right: 50,
+    left: 100
+  };
+
+  var height = svgHeight - margin.top - margin.bottom;
+  var width = svgHeight - margin.left - margin.right;
+
+  // Append SVG element
+  var svg = d3
+    .select(".chart")
+    .append("svg")
+    .attr("height", svgHeight)
+    .attr("width", svgWidth);
+
+  // Append group element
+  var chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  // Read CSV
+  d3.csv("static/social-power-nba/nba_2017_players_with_salary_wiki_twitter.csv", function(err, data) {
+console.log(data);
+    // create date parser
+  
+
+    // parse data
+    data.forEach(function(data1) {
+      data1.Rk = +data1.Rk
+      data1.POINTS = +data1.POINTS;
+    });
+
+    // create scales
+    var xLinearScale = d3.scaleLinear()
+      .domain([d3.extent(data, d => d.Rk)[1],d3.extent(data, d => d.Rk)[0]])
+      .range([0, width]);
+
+    var yLinearScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.POINTS)])
+      .range([height, 0]);
+
+    // create axes
+    var xAxis = d3.axisBottom(xLinearScale);
+    var yAxis = d3.axisLeft(yLinearScale).ticks(6);
+
+    // append axes
+    chartGroup.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(xAxis);
+
+    chartGroup.append("g")
+      .call(yAxis);
+
+    // line generator
+    // var line = d3.line()
+    //   .x(d => xTimeScale(d.date))
+    //   .y(d => yLinearScale(d.medals));
+
+    // // append line
+    // chartGroup.append("path")
+    //   .data([data])
+    //   .attr("d", line)
+    //   .attr("fill", "none")
+    //   .attr("stroke", "red");
+
+
+
+
+
+    // append circles
+    var circlesGroup = chartGroup.selectAll("circle")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xLinearScale(d.Rk))
+      .attr("cy", d => yLinearScale(d.POINTS))
+      .attr("r", "2.5")
+      .attr("fill", "teal")
+      .attr("stroke-width", "1")
+      .attr("stroke", "black");
+
+      svg.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y",100 - margin.left/2)
+  .attr("x", - (height / 2)-50)
+  .attr("class", "aText")
+  .attr("class", "aText")
+  .attr("id","axisY")
+  .text("Points");
+
+svg.append("text")
+  .attr("transform", `translate(${width / 2+80}, ${height + margin.top + 50})`)
+  .attr("class", "axisText")
+  .attr("id","axisX")
+  .text("Rank")
+   
+
+    // Step 1: Append tooltip div
+    var toolTip = d3.select("svg").append("div")
+    .attr("class", "tooltip");
+
+
+    // Step 2: Create "mouseover" event listener to display tooltip
+    circlesGroup.on("mouseover", function(d, i) {
+      toolTip.style("display", "circle");
+      toolTip.html(`Player Name: <strong>${data[i]['PLAYER']}</strong>`)
+        .style("left", d3.event.pageX )
+        .style("top", d3.event.pageY );
+        console.log(data[i]['PLAYER'])
+
+        var namess = data[i]['PLAYER'].split(" ");
+
+        d3.json("/playerList/"+namess[0]+"/"+namess[1],function(url_img){
+console.log(url_img)
+var svg2 = d3.select("body")
+                .append("svg")
+                .attr("width", 300)
+                .attr("height", 200)
+                ;
+var imgs = svg2.selectAll("image").data([0]);
+                imgs.enter()
+                .append("svg:image")
+                .attr("xlink:href", url_img)
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 400)
+                .attr("height", 200);
+
+        })
+
+
+
+    })
+
+    // Step 3: Create "mouseout" event listener to hide tooltip
+    .on("mouseout", function() {
+      toolTip.style("display", "none");
+    });
+
+  });
+
+}
+  makeResponsive();
+
+
+  d3.select(window).on("resize", makeResponsive);
+
+
+      </script>
+
+
+
+
+
+
+</body>
+</html>
