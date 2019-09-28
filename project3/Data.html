@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data</title>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"> </script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> 
+    
+	
+    
+<script>
+	$(document).ready(function(){
+		$.getJSON('nbaJSON.json', function(data) {
+		console.log(data);
+		var players = '';
+       $.each(data, function(key, value) {
+          players += '<tr>' ;
+		  players += '<td>' + value.player + '</td>';
+		  players += '<td>' + value.age + '</td>';
+		  players += '<td>' + value.salary_millions + '</td>';
+		  players += '<td>' + value.twitter_favorite_count + '</td>';
+		  players += '<td>' + value.wins_rpm + '</td>';
+		  players += '</tr>';
+		  
+		  });
+          $('#playerdata').append(players);
+     });
+	 
+   });
+
+</script>
+	
+</head>
+
+<body>
+<div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container" id="nav_color">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand text-white bg-success active bg-primary" style="background-color:orange" href="index.html">Top 100 NBA Players' Popularity</a>
+            </div>
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                            aria-expanded="false">
+                            Plots
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="">Age</a></li>
+                            <li><a href="">Page Views</a></li>
+                            <li><a href="">Salary</a></li>
+                            <li><a href="">Twitter Count</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Comparison.html">Comparison</a></li>
+                    <li><a href="Data.html">Data</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+	</div>
+	<div class="container">
+		<div class="table-responsive">
+			 <h3>Data Analysis</h3>
+			 <br />
+			 <p class="category">The following table contains the data used for plotting during this project.</p>
+			 
+			 <table class="table table-bordered table-striped" id="playerdata">
+			 <tr>
+                <th>Player</th>
+                <th>Age</th>
+                <th>Salary</th>
+                <th>Twitter Count</th>
+				<th>Wins</th>
+             </tr>
+			 </table>
+		</div>
+	</div>
+    
+                         
+         <div>
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<img src="images/LJ.png" height="200" width="200" >
+						</td>
+						<td width="50"></td>
+						<td>
+							<img src="images/SC.png" height="200" width="200" >
+						</td>
+						<td width="50"></td>
+						<td>
+							<img src="images/KD.png" height="200" width="200" >
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		 </div>
+
+		</body>
+     </html>
